@@ -1,6 +1,17 @@
 import Link from "next/link";
-
+import { Plus } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { Button } from "~/components/ui/button";
 import { api, HydrateClient } from "~/trpc/server";
+
+const mockActiveGrid = {
+  id: "1",
+  artists: [
+    { id: "1", name: "Dad", avatar: "/placeholder.svg?height=100&width=100" },
+    { id: "2", name: "Mum", avatar: "/placeholder.svg?height=100&width=100" },
+    { id: "3", name: "Chris", avatar: "/placeholder.svg?height=100&width=100" },
+  ],
+};
 
 export default async function Home() {
   const hello = await api.devices.hello({ text: "from Chris" });
@@ -8,43 +19,40 @@ export default async function Home() {
 
   return (
     <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
+      <div className="flex flex-1 flex-col">
+        <main className="container mx-auto flex max-w-3xl flex-1 flex-col items-center justify-center gap-16 px-4">
+          {mockActiveGrid ? (
+            <div className="flex w-full items-center justify-around">
+              {mockActiveGrid.artists.map((artist) => (
+                <Link
+                  key={artist.id}
+                  href={`/pin-input?artistId=${artist.id}`}
+                  className="group flex flex-col items-center gap-3"
+                >
+                  <div className="relative">
+                    <Avatar className="h-24 w-24 border-2 border-border transition-transform group-hover:scale-105">
+                      <AvatarImage src={artist.avatar} alt={artist.name} />
+                      <AvatarFallback>{artist.name.slice(0, 2)}</AvatarFallback>
+                    </Avatar>
+                  </div>
+                  <span className="text-sm font-medium">{artist.name}</span>
+                </Link>
+              ))}
+            </div>
+          ) : null}
+
+          <Link href="/grid" className="block">
+            <Button
+              variant="neutral"
+              size="icon"
+              className={`hover:border-primary hover:bg-primary/5 rounded-full border-2 border-dashed transition-all duration-200 ${mockActiveGrid ? "h-24 w-24" : "h-40 w-40"} `}
             >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello ? hello.greeting : "Loading tRPC query..."}
-            </p>
-            <p>{JSON.stringify(devices)}</p>
-          </div>
-        </div>
-      </main>
+              <Plus className={mockActiveGrid ? "h-8 w-8" : "h-12 w-12"} />
+              <span className="sr-only">Create New Grid</span>
+            </Button>
+          </Link>
+        </main>
+      </div>
     </HydrateClient>
   );
 }

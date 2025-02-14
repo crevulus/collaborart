@@ -1,9 +1,9 @@
 import { type Viewport, type Metadata } from "next";
+import { Suspense } from "react";
 import { TRPCReactProvider } from "~/trpc/react";
-import { THEME_COLOUR } from "./lib/constants";
+import { THEME_COLOUR } from "../lib/constants";
 
 import "~/styles/globals.css";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Artist Grid App",
@@ -23,11 +23,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`bg-bg flex min-h-screen flex-col bg-[radial-gradient(#80808080_1px,transparent_1px)] font-sans antialiased [background-size:16px_16px]`}
-    >
-      <body>
+    <html lang="en">
+      <body
+        className={`flex min-h-screen flex-col bg-bg bg-[radial-gradient(#80808080_1px,transparent_1px)] font-sans antialiased [background-size:16px_16px]`}
+      >
         <TRPCReactProvider>
           <main className="flex flex-1">
             <Suspense>{children}</Suspense>
