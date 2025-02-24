@@ -10,3 +10,5 @@ export const COLOURS = [
 ];
 
 export const THEME_COLOUR = "#fd9745";
+
+export const DEVICE_ID_LOCAL_STORAGE_KEY = "collaborart_device_id";

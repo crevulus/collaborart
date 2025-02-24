@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
-import { api, HydrateClient } from "~/trpc/server";
+import { HydrateClient } from "~/trpc/server";
 
 const mockActiveGrid = {
   id: "1",
@@ -14,9 +14,6 @@ const mockActiveGrid = {
 };
 
 export default async function Home() {
-  const hello = await api.devices.hello({ text: "from Chris" });
-  const devices = await api.devices.getAll();
-
   return (
     <HydrateClient>
       <div className="flex flex-1 flex-col">

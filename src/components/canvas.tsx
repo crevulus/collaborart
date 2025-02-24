@@ -19,13 +19,12 @@ export default function Canvas({
   draw,
   stopDrawing,
 }: CanvasProps) {
-  if (!canvasRef?.current) return null;
+  if (!canvasRef) return null;
 
   return (
     <div className="bg-card relative aspect-square rounded-xl border">
       <canvas
-        // @ts-expect-error - cannot be null, already checked
-        ref={canvasRef}
+        ref={canvasRef as React.RefObject<HTMLCanvasElement>}
         className="h-full w-full rounded-xl bg-white"
         onMouseDown={startDrawing}
         onMouseMove={draw}

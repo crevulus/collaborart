@@ -13,7 +13,6 @@ interface GridProps {
 }
 
 export function Grid({ cells, onCellClick }: GridProps) {
-  console.log(cells);
   return (
     <div className="bg-card grid aspect-square grid-cols-5 rounded-xl p-1 sm:p-2">
       {new Array(25).fill("a").map((cell: GridCell, index) => (
