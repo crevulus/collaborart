@@ -11,22 +11,21 @@ export default function LocalStorageChecker() {
     defaultValue: "",
   });
 
-  const { mutate } = api.devices.create.useMutation();
+  const value = getValue();
 
-  // const { data } = api.devices.getOne.useQuery({
-  //   id: getValue(),
-  // });
-
-  // console.log({ data });
+  const { mutate } = api.devices.create.useMutation({
+    onSuccess: (data) => {
+      if (!value) setValue(data.id);
+    },
+  });
 
   useEffect(() => {
-    if (!getValue()) {
-      setValue(Date.now().toString());
+    if (!value) {
       mutate();
     } else {
-      console.log("Device ID already exists:", getValue());
+      console.log("Device ID already exists:", value);
     }
-  }, [getValue, setValue]);
+  }, []);
 
   return null;
 }
