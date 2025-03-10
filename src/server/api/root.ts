@@ -1,6 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { devicesRouter } from "./routers/devices";
 import { postRouter } from "./routers/post";
+import { gridsRouter } from "./routers/grids";
 
 /**
  * This is the primary router for your server.
@@ -9,6 +10,7 @@ import { postRouter } from "./routers/post";
  */
 export const appRouter = createTRPCRouter({
   devices: devicesRouter,
+  grids: gridsRouter,
   post: postRouter,
 });
 

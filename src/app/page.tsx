@@ -1,8 +1,7 @@
-import Link from "next/link";
-import { Plus } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Button } from "~/components/ui/button";
+// import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { HydrateClient } from "~/trpc/server";
+import { CreateArtistButton } from "~/components/create-artist-button";
+import { AppHeader } from "~/components/app-header";
 
 const mockActiveGrid = {
   id: "1",
@@ -14,11 +13,16 @@ const mockActiveGrid = {
 };
 
 export default async function Home() {
+  const createNewGrid = async () => {
+    "use server";
+  };
+
   return (
     <HydrateClient>
       <div className="flex flex-1 flex-col">
+        <AppHeader />
         <main className="container mx-auto flex max-w-3xl flex-1 flex-col items-center justify-center gap-16 px-4">
-          {mockActiveGrid ? (
+          {/* {mockActiveGrid ? (
             <div className="flex w-full items-center justify-around">
               {mockActiveGrid.artists.map((artist) => (
                 <Link
@@ -36,18 +40,9 @@ export default async function Home() {
                 </Link>
               ))}
             </div>
-          ) : null}
+          ) : null} */}
 
-          <Link href="/grid" className="block">
-            <Button
-              variant="neutral"
-              size="icon"
-              className={`hover:border-primary hover:bg-primary/5 rounded-full border-2 border-dashed transition-all duration-200 ${mockActiveGrid ? "h-24 w-24" : "h-40 w-40"} `}
-            >
-              <Plus className={mockActiveGrid ? "h-8 w-8" : "h-12 w-12"} />
-              <span className="sr-only">Create New Grid</span>
-            </Button>
-          </Link>
+          <CreateArtistButton hasActiveGrid={!!mockActiveGrid} />
         </main>
       </div>
     </HydrateClient>

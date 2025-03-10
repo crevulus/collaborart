@@ -1,4 +1,4 @@
-"use client";
+"use client"; // TODO: Remove this line?
 
 import { PinInput } from "~/components/pin-input";
 import type { INextPageProps } from "~/lib/types";
