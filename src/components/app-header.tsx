@@ -15,7 +15,7 @@ function AppHeader({
   title = "[App Name]",
 }: HeaderProps) {
   return (
-    <header className="supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 border-b bg-white backdrop-blur">
+    <header className="supports-backdrop-filter:bg-background/60 sticky top-0 z-50 border-b bg-white backdrop-blur-sm">
       <div className="container mx-auto flex h-14 max-w-3xl items-center justify-between px-4">
         {showIcons ? (
           <Button
