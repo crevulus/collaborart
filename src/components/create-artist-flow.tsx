@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { type ChangeEvent, type FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
@@ -17,6 +17,7 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import { createNewGrid } from "~/app/actions/createNewGrid";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import { DEVICE_ID_LOCAL_STORAGE_KEY } from "~/lib/constants";
+import { TRPCError } from "@trpc/server";
 
 interface CreateArtistFlowProps {
   open: boolean;
@@ -31,6 +32,7 @@ export function CreateArtistFlow({ open, onClose }: CreateArtistFlowProps) {
   const [name, setName] = useState("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { getValue } = useLocalStorage({
     key: DEVICE_ID_LOCAL_STORAGE_KEY,
     defaultValue: "",
@@ -47,15 +49,23 @@ export function CreateArtistFlow({ open, onClose }: CreateArtistFlowProps) {
   };
 
   const handlePinSubmit = async (e: FormEvent) => {
+    setIsLoading(true);
     e.preventDefault();
     if (pin.length !== 4) {
       setError("PIN must be 4 digits");
       return;
     }
 
-    await createNewGrid(getValue());
+    try {
+      await createNewGrid(getValue());
 
-    router.push("/grid");
+      router.push("/grid");
+    } catch (error) {
+      console.error(error);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handlePinChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -107,7 +117,12 @@ export function CreateArtistFlow({ open, onClose }: CreateArtistFlowProps) {
             {error && (
               <p className="text-center text-sm text-red-500">{error}</p>
             )}
-            <Button type="submit" className="w-full">
+            <Button
+              type="submit"
+              className="w-full"
+              loading={isLoading}
+              disabled={isLoading || pin.length !== 4}
+            >
               Create Grid
             </Button>
           </form>
