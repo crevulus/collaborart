@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
+
 import { ArtistList } from "~/components/artist-list";
 import { Grid } from "~/components/grid";
 import { ExportModal } from "~/components/export-modal";
 import { AddArtistModal } from "~/components/add-artist-modal";
 import { Progress } from "~/components/ui/progress";
 import { AppHeader } from "~/components/app-header";
+import type { INextPageProps } from "~/lib/types";
+import { SearchParams } from "~/enums/general";
 
 // Mock data for the grid cells (5x5)
 const initialGridData = ["1", "2"].map((emoji, index) => ({
@@ -17,8 +20,9 @@ const initialGridData = ["1", "2"].map((emoji, index) => ({
   thumbnail: "hi",
 }));
 
-export default function GridPage() {
+export default function GridPage({ searchParams }: INextPageProps) {
   const router = useRouter();
+  const { [SearchParams.GridId]: gridId } = use(searchParams);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showAddArtistModal, setShowAddArtistModal] = useState(false);
   const [lastContributorId] = useState<string>("1"); // placeholder
@@ -39,7 +43,7 @@ export default function GridPage() {
   };
 
   const handleCellClick = (id: string) => {
-    router.push(`/canvas?cell=${id}`);
+    router.push(`/canvas?${SearchParams.CellId}=${id}`);
   };
 
   return (

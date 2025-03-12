@@ -5,16 +5,17 @@ import { useRef, use } from "react";
 import { AppHeader } from "~/components/app-header";
 import Draw from "~/components/draw";
 import type { INextPageProps } from "~/lib/types";
+import { SearchParams } from "~/enums/general";
 
 export default function CanvasPage({ searchParams }: INextPageProps) {
   const router = useRouter();
-  const { cell } = use(searchParams);
+  const { [SearchParams.CellId]: cellId } = use(searchParams);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const handleSave = () => {
     if (!canvasRef.current) return;
 
-    router.push(`/grid${cell ? `?cell=${cell}` : ""}`);
+    router.push(`/grid${cellId ? `?${SearchParams.CellId}=${cellId}` : ""}`);
   };
 
   return (

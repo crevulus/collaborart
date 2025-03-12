@@ -16,6 +16,8 @@
   --color-ring: var(--ring);
   --color-ring-offset: var(--ring-offset);
   --color-secondary-black: #212121;
+  --color-error: var(--error);
+  --color-warning: var(--warning);
 
   --radius-base: 5px;
 
@@ -50,6 +52,8 @@
 
 :root {
   --main: #fd9745;
+  --error: #FD454F;
+  --warning: #FDF345;
   --overlay: rgba(
     0,
     0,
