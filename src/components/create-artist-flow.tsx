@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { ArrowRight, X } from "lucide-react";
-import clsx from "clsx";
 
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -19,11 +18,11 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { DialogClose, DialogDescription } from "@radix-ui/react-dialog";
-import { createNewGrid } from "~/app/actions/createNewGrid";
 import useLocalStorage from "~/hooks/useLocalStorage";
 import { DEVICE_ID_LOCAL_STORAGE_KEY } from "~/lib/constants";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
+import { Form, FormControl, FormField, FormItem } from "./ui/form";
 import { SearchParams } from "~/enums/general";
+import { api } from "~/trpc/react";
 
 interface CreateArtistFlowProps {
   open: boolean;
@@ -37,6 +36,7 @@ export function CreateArtistFlow({ open, onClose }: CreateArtistFlowProps) {
     key: DEVICE_ID_LOCAL_STORAGE_KEY,
     defaultValue: "",
   });
+  const createGrid = api.grids.create.useMutation();
 
   const formSchema = z.object({
     name: z.string().min(2, {
@@ -66,7 +66,7 @@ export function CreateArtistFlow({ open, onClose }: CreateArtistFlowProps) {
     setIsLoading(true);
 
     try {
-      const newGrid = await createNewGrid(getValue());
+      const newGrid = await createGrid.mutateAsync(getValue());
 
       router.push(`/grid?${SearchParams.GridId}=${newGrid.id}`);
     } catch (error) {

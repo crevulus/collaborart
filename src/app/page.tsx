@@ -13,10 +13,6 @@ const mockActiveGrid = {
 };
 
 export default async function Home() {
-  const createNewGrid = async () => {
-    "use server";
-  };
-
   return (
     <HydrateClient>
       <div className="flex flex-1 flex-col">
