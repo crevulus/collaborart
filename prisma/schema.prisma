@@ -27,24 +27,27 @@ model exports {
 
 model grids {
   id          BigInt    @id @default(autoincrement())
-  pin         Int
   is_complete Boolean?
   device_id   String    @db.Uuid
   created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  owner_id    BigInt?
   exports     exports[]
   devices     devices   @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   guests      guests[]
   squares     squares[]
+  owner       guests?   @relation("GridOwner", fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model guests {
-  id         BigInt   @id @default(autoincrement())
-  grid_id    BigInt
-  username   String
-  device_id  String   @db.Uuid
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  devices    devices  @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  grids      grids    @relation(fields: [grid_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id          BigInt   @id @default(autoincrement())
+  grid_id     BigInt
+  username    String
+  pin         Int
+  device_id   String   @db.Uuid
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  devices     devices  @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  grids       grids    @relation(fields: [grid_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  owned_grids grids[]  @relation("GridOwner")
 }
 
 model squares {

@@ -23,50 +23,44 @@ import { DEVICE_ID_LOCAL_STORAGE_KEY } from "~/lib/constants";
 import { Form, FormControl, FormField, FormItem } from "./ui/form";
 import { SearchParams } from "~/enums/general";
 import { api } from "~/trpc/react";
+import { pinSchema, usernameSchema } from "~/lib/validations";
 
 interface CreateArtistFlowProps {
   open: boolean;
   onClose: () => void;
 }
 
+const createArtistFormSchema = z.object({
+  name: usernameSchema,
+  pin: pinSchema,
+});
+
 export function CreateArtistFlow({ open, onClose }: CreateArtistFlowProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { getValue } = useLocalStorage({
+  const { getValue: getDeviceId } = useLocalStorage({
     key: DEVICE_ID_LOCAL_STORAGE_KEY,
     defaultValue: "",
   });
   const createGrid = api.grids.create.useMutation();
 
-  const formSchema = z.object({
-    name: z.string().min(2, {
-      message: "Name must be at least 2 characters.",
-    }),
-    pin: z
-      .string()
-      .min(4, {
-        message: "PIN must be > 4 digits.",
-      })
-      .max(6, {
-        message: "PIN must be < 6 digits.",
-      }),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createArtistFormSchema>>({
+    resolver: zodResolver(createArtistFormSchema),
     defaultValues: {
       name: "",
       pin: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-
+  const onSubmit = async (values: z.infer<typeof createArtistFormSchema>) => {
     setIsLoading(true);
 
     try {
-      const newGrid = await createGrid.mutateAsync(getValue());
+      const newGrid = await createGrid.mutateAsync({
+        device_id: getDeviceId(),
+        username: values.name,
+        pin: values.pin,
+      });
 
       router.push(`/grid?${SearchParams.GridId}=${newGrid.id}`);
     } catch (error) {

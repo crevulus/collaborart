@@ -22,7 +22,7 @@ export function Grid({ cells, onCellClick }: GridProps) {
           className={cn(
             "relative aspect-square bg-white transition-all",
             "hover:scale-[0.98] active:scale-[0.97]",
-            "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring",
+            "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-hidden",
             cell.filled && "bg-background shadow-xs",
             "border-gray-300",
             index % 5 !== 4 && "border-r-2",
