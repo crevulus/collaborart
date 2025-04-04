@@ -21,12 +21,10 @@ export function ActiveArtists() {
     { enabled: !!activeGrid?.id },
   );
 
-  // Ensure we have valid data before rendering
   if (!activeGrid?.id || !artists?.length) {
     return null;
   }
 
-  // Filter out any artists with missing data
   const validArtists = artists.filter(
     (artist) => artist?.id && artist?.username,
   );
