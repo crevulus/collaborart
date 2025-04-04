@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
+import { SearchParams } from "~/enums/general";
 
 interface PinInputProps {
   username: string;
@@ -35,7 +36,7 @@ export function PinInput({
       const isValidPin = pin === "1234"; // placeholder
       setIsValid(isValidPin);
       if (isValidPin) {
-        router.push(`/grid?artist=${artistId}`);
+        router.push(`/grid?${SearchParams.Artist}=${artistId}`);
       }
     } else {
       setIsValid(false);

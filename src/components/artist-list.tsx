@@ -1,66 +1,92 @@
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import Link from "next/link";
+import { Avatar, AvatarFallback } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Plus } from "lucide-react";
 import { cn } from "~/lib/utils";
 
 interface Artist {
-  id: string;
-  name: string;
-  avatar: string;
+  id: bigint;
+  username: string;
 }
 
 interface ArtistListProps {
   artists: Artist[];
-  lastContributorId: string;
-  onAddArtist: () => void;
+  onAddClick?: () => void;
+  avatarSize?: "sm" | "md" | "lg";
+  alignment?: "left" | "center" | "right";
 }
+
+const avatarClasses = {
+  sm: "h-16 w-16 text-md",
+  md: "h-20 w-20 text-lg",
+  lg: "h-24 w-24 text-xl",
+};
 
 export function ArtistList({
   artists,
-  lastContributorId,
-  onAddArtist,
+  onAddClick,
+  avatarSize = "lg",
+  alignment = "center",
 }: ArtistListProps) {
-  const canContribute = (id: string) => id !== lastContributorId;
+  const showAddButton = !!onAddClick;
+
+  if (!artists?.length && !showAddButton) {
+    return null;
+  }
 
   return (
-    <div className="-mx-4 flex items-center gap-6 overflow-x-auto px-4 py-2">
-      {artists.map((artist) => (
-        <div
-          key={artist.id}
-          className={cn(
-            "flex flex-col items-center gap-2",
-            !canContribute(artist.id) && "opacity-50",
-          )}
-        >
-          <Avatar
-            className={cn(
-              "h-16 w-16 border-2",
-              canContribute(artist.id) ? "border-primary" : "border-muted",
-            )}
+    <div
+      className={cn(
+        "flex w-full items-center justify-around gap-4",
+        alignment === "left" && "justify-start",
+        alignment === "right" && "justify-end",
+      )}
+    >
+      {artists.map((artist) => {
+        if (!artist?.username) return null;
+
+        const initials = artist.username.slice(0, 1).toUpperCase();
+
+        return (
+          <Link
+            key={artist.id.toString()}
+            href={`/pin-input?artistId=${artist.id}`}
+            className="group flex flex-col items-center gap-3"
           >
-            <AvatarImage src={artist.avatar} alt={artist.name} />
-            <AvatarFallback>
-              {artist.name.slice(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <span className="whitespace-nowrap text-sm font-medium">
-            {artist.name}
+            <div className="relative">
+              <Avatar
+                className={cn(
+                  `border-border border-1 transition-transform group-hover:scale-105`,
+                  avatarClasses[avatarSize],
+                )}
+              >
+                <AvatarFallback>{initials}</AvatarFallback>
+              </Avatar>
+            </div>
+            <span className="text-sm font-medium">{artist.username}</span>
+          </Link>
+        );
+      })}
+
+      {showAddButton && (
+        <div className="flex flex-col items-center gap-3">
+          <Button
+            size="icon"
+            className={cn(
+              `rounded-full border-2 border-dashed`,
+              avatarClasses[avatarSize],
+            )}
+            onClick={onAddClick}
+          >
+            <Plus
+              className={`${avatarSize === "lg" ? "h-8 w-8" : "h-6 w-6"}`}
+            />
+          </Button>
+          <span className="text-muted-foreground text-sm font-medium">
+            Add Artist
           </span>
         </div>
-      ))}
-
-      <div className="flex flex-col items-center gap-2">
-        <Button
-          size="icon"
-          className="h-16 w-16 rounded-full border-2 border-dashed"
-          onClick={onAddArtist}
-        >
-          <Plus className="h-6 w-6" />
-        </Button>
-        <span className="text-muted-foreground whitespace-nowrap text-sm font-medium">
-          Add Artist
-        </span>
-      </div>
+      )}
     </div>
   );
 }

@@ -11,6 +11,7 @@ import { Progress } from "~/components/ui/progress";
 import { AppHeader } from "~/components/app-header";
 import type { INextPageProps } from "~/lib/types";
 import { SearchParams } from "~/enums/general";
+import { api } from "~/trpc/react";
 
 // Mock data for the grid cells (5x5)
 const initialGridData = ["1", "2"].map((emoji, index) => ({
@@ -22,21 +23,26 @@ const initialGridData = ["1", "2"].map((emoji, index) => ({
 
 export default function GridPage({ searchParams }: INextPageProps) {
   const router = useRouter();
-  const { [SearchParams.GridId]: gridId } = use(searchParams);
+  const { [SearchParams.GridId]: gridId, [SearchParams.Artist]: artistId } =
+    use(searchParams);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showAddArtistModal, setShowAddArtistModal] = useState(false);
-  const [lastContributorId] = useState<string>("1"); // placeholder
   const [gridData] = useState(initialGridData);
 
-  const artists = [
-    { id: "1", name: "Chris", avatar: "/placeholder.svg?height=40&width=40" },
-    { id: "2", name: "Mum", avatar: "/placeholder.svg?height=40&width=40" },
-    { id: "3", name: "Dad", avatar: "/placeholder.svg?height=40&width=40" },
-  ];
+  // If we have an artist ID but no grid ID, fetch the grid by artist
+  const { data: gridByArtist } = api.grids.getGridByArtist.useQuery(
+    { artist_id: Number(artistId) ?? 0 },
+    { enabled: !!artistId && !gridId },
+  );
 
-  // const handleSave = () => {
-  //   setShowExportModal(true);
-  // };
+  // Use the grid ID from the URL or from the artist
+  const effectiveGridId = gridId ?? gridByArtist?.id;
+
+  // Use the cached data from tRPC
+  const { data: artists } = api.grids.getArtists.useQuery(
+    { grid_id: Number(effectiveGridId) ?? 0 },
+    { enabled: !!effectiveGridId },
+  );
 
   const handleAddArtist = () => {
     setShowAddArtistModal(true);
@@ -46,15 +52,20 @@ export default function GridPage({ searchParams }: INextPageProps) {
     router.push(`/canvas?${SearchParams.CellId}=${id}`);
   };
 
+  const handleSave = () => {
+    setShowExportModal(true);
+  };
+
   return (
     <div className="flex w-full flex-col">
-      <AppHeader showIcons onSave={() => {}} />
+      <AppHeader showIcons onSave={handleSave} />
 
       <main className="container mx-auto max-w-3xl flex-1 space-y-6 px-4 py-4">
         <ArtistList
-          artists={artists}
-          lastContributorId={lastContributorId}
-          onAddArtist={handleAddArtist}
+          artists={artists ?? []}
+          onAddClick={handleAddArtist}
+          avatarSize="sm"
+          alignment="left"
         />
 
         <Grid cells={gridData} onCellClick={handleCellClick} />

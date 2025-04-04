@@ -12,7 +12,7 @@ model devices {
   created_at DateTime  @db.Timestamptz(6)
   exports    exports[]
   grids      grids[]
-  guests     guests[]
+  artists    artists[]
 }
 
 model exports {
@@ -33,12 +33,12 @@ model grids {
   owner_id    BigInt?
   exports     exports[]
   devices     devices   @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  guests      guests[]
+  artists     artists[]
   squares     squares[]
-  owner       guests?   @relation("GridOwner", fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  owner       artists?  @relation("GridOwner", fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model guests {
+model artists {
   id          BigInt   @id @default(autoincrement())
   grid_id     BigInt
   username    String
