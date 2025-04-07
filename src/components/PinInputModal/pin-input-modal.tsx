@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { Lock, Unlock } from "lucide-react";
 import { z } from "zod";
 
-import { FormModal } from "~/components/FormModal";
 import { SearchParams } from "~/enums/general";
 import { pinSchema } from "~/lib/validations";
 import { Avatar, AvatarFallback } from "~/components/ui/avatar";
+import { pinField } from "../FormModal/constants";
+import { FormModal } from "../FormModal";
 
 interface PinInputModalProps {
   open: boolean;
@@ -55,16 +56,7 @@ export function PinInputModal({ open, onClose, artist }: PinInputModalProps) {
       defaultValues={{
         pin: "",
       }}
-      fields={[
-        {
-          name: "pin",
-          placeholder: "PIN",
-          type: "text",
-          inputMode: "numeric",
-          pattern: "[0-9]*",
-          maxLength: 6,
-        },
-      ]}
+      fields={[pinField]}
       onSubmit={handleSubmit}
       isSubmitDisabled={!isValid}
       submitButtonIcon={

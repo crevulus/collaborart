@@ -10,7 +10,8 @@ import { DEVICE_ID_LOCAL_STORAGE_KEY } from "~/lib/constants";
 import { SearchParams } from "~/enums/general";
 import { api } from "~/trpc/react";
 import { pinSchema, usernameSchema } from "~/lib/validations";
-import { FormModal } from "~/components/FormModal";
+import { nameField, pinField } from "../FormModal/constants";
+import { FormModal } from "../FormModal";
 
 interface CreateArtistFlowProps {
   open: boolean;
@@ -60,20 +61,7 @@ export function CreateArtistFlow({ open, onClose }: CreateArtistFlowProps) {
         name: "",
         pin: "",
       }}
-      fields={[
-        {
-          name: "name",
-          placeholder: "Name",
-        },
-        {
-          name: "pin",
-          placeholder: "PIN",
-          type: "text",
-          inputMode: "numeric",
-          pattern: "[0-9]*",
-          maxLength: 6,
-        },
-      ]}
+      fields={[nameField, pinField]}
       onSubmit={handleSubmit}
       submitButtonIcon={<ArrowRight />}
       isLoading={isLoading}
