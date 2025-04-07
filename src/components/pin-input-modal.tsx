@@ -9,7 +9,6 @@ import { FormModal } from "~/components/form-modal";
 import { SearchParams } from "~/enums/general";
 import { pinSchema } from "~/lib/validations";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { cn } from "~/lib/utils";
 
 interface PinInputModalProps {
   open: boolean;
@@ -29,29 +28,21 @@ export function PinInputModal({ open, onClose, artist }: PinInputModalProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isValid, setIsValid] = useState(false);
-  const [pinValue, setPinValue] = useState("");
 
   useEffect(() => {
     if (open) {
-      setPinValue("");
       setIsValid(false);
     }
   }, [open]);
 
-  const handleSubmit = async (values: Record<string, unknown>) => {
-    const enteredPin = values.pin as string;
-
-    if (enteredPin === artist.pin.toString()) {
-      setIsLoading(true);
-      router.push(`/grid?${SearchParams.Artist}=${artist.id}`);
-    } else {
-      //
-    }
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    router.push(`/grid?${SearchParams.Artist}=${artist.id}`);
   };
 
   const handlePinChange = (value: string) => {
-    setPinValue(value);
-    setIsValid(value.length > 0);
+    const isValidPin = value === artist.pin.toString();
+    setIsValid(isValidPin);
   };
 
   return (
@@ -75,12 +66,9 @@ export function PinInputModal({ open, onClose, artist }: PinInputModalProps) {
         },
       ]}
       onSubmit={handleSubmit}
+      isSubmitDisabled={!isValid}
       submitButtonIcon={
-        pinValue.length > 0 ? (
-          <Unlock className="h-4 w-4" />
-        ) : (
-          <Lock className="h-4 w-4" />
-        )
+        isValid ? <Unlock className="h-4 w-4" /> : <Lock className="h-4 w-4" />
       }
       isLoading={isLoading}
       customContent={

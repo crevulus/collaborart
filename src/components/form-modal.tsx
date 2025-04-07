@@ -5,7 +5,7 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { ZodType } from "zod";
 import { useForm } from "react-hook-form";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -42,6 +42,7 @@ interface FormModalProps {
   isLoading?: boolean;
   customContent?: React.ReactNode;
   onFieldChange?: (name: string, value: unknown) => void;
+  isSubmitDisabled?: boolean;
 }
 
 export function FormModal({
@@ -56,6 +57,7 @@ export function FormModal({
   submitButtonText,
   submitButtonIcon,
   isLoading = false,
+  isSubmitDisabled = false,
   customContent,
   onFieldChange,
 }: FormModalProps) {
@@ -136,7 +138,7 @@ export function FormModal({
                   type="submit"
                   className="rounded-full"
                   loading={isLoading}
-                  disabled={isLoading || !form.formState.isValid}
+                  disabled={isSubmitDisabled || isLoading}
                 >
                   {submitButtonIcon ?? submitButtonText}
                 </Button>
