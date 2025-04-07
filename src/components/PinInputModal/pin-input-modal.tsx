@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { Lock, Unlock } from "lucide-react";
 import { z } from "zod";
 
-import { FormModal } from "~/components/form-modal";
+import { FormModal } from "~/components/FormModal";
 import { SearchParams } from "~/enums/general";
 import { pinSchema } from "~/lib/validations";
-import { Avatar, AvatarFallback } from "./ui/avatar";
+import { Avatar, AvatarFallback } from "~/components/ui/avatar";
 
 interface PinInputModalProps {
   open: boolean;

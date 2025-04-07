@@ -3,12 +3,12 @@
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { ArtistList } from "~/components/artist-list";
-import { Grid } from "~/components/grid";
-import { ExportModal } from "~/components/export-modal";
-import { AddArtistModal } from "~/components/add-artist-modal";
+import { ArtistList } from "~/components/ArtistList";
+import { Grid } from "~/components/Grid";
+import { ExportModal } from "~/components/ExportModal";
+import { AddArtistModal } from "~/components/AddArtistModal";
 import { Progress } from "~/components/ui/progress";
-import { AppHeader } from "~/components/app-header";
+import { AppHeader } from "~/components/AppHeader";
 import type { INextPageProps } from "~/lib/types";
 import { SearchParams } from "~/enums/general";
 import { api } from "~/trpc/react";

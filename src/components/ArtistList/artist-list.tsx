@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Plus } from "lucide-react";
 import { cn } from "~/lib/utils";
-import { PinInputModal } from "~/components/pin-input-modal";
+import { PinInputModal } from "~/components/PinInputModal";
 
 interface Artist {
   id: bigint;

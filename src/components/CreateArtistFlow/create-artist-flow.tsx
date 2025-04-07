@@ -10,7 +10,7 @@ import { DEVICE_ID_LOCAL_STORAGE_KEY } from "~/lib/constants";
 import { SearchParams } from "~/enums/general";
 import { api } from "~/trpc/react";
 import { pinSchema, usernameSchema } from "~/lib/validations";
-import { FormModal } from "~/components/form-modal";
+import { FormModal } from "~/components/FormModal";
 
 interface CreateArtistFlowProps {
   open: boolean;

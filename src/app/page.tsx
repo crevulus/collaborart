@@ -1,7 +1,7 @@
 import { HydrateClient } from "~/trpc/server";
-import { CreateArtistButton } from "~/components/create-artist-button";
-import { AppHeader } from "~/components/app-header";
-import { ActiveArtists } from "~/components/active-artists";
+import { CreateArtistButton } from "~/components/CreateArtistButton";
+import { AppHeader } from "~/components/AppHeader";
+import { ActiveArtists } from "~/components/ActiveArtists";
 
 export default async function Home() {
   return (

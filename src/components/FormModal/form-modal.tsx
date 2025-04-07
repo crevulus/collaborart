@@ -5,7 +5,7 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { ZodType } from "zod";
 import { useForm } from "react-hook-form";
-import { X, Loader2 } from "lucide-react";
+import { X } from "lucide-react";
 
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -17,7 +17,13 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { DialogClose, DialogDescription } from "@radix-ui/react-dialog";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "../ui/form";
 
 // Reusable form modal component that can be used for different forms
 interface FormModalProps {

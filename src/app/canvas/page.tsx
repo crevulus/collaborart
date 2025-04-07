@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useRef, use } from "react";
-import { AppHeader } from "~/components/app-header";
-import Draw from "~/components/draw";
+import { AppHeader } from "~/components/AppHeader";
+import { Draw } from "~/components/Draw";
 import type { INextPageProps } from "~/lib/types";
 import { SearchParams } from "~/enums/general";
 

@@ -3,7 +3,7 @@
 import useLocalStorage from "~/hooks/useLocalStorage";
 import { DEVICE_ID_LOCAL_STORAGE_KEY } from "~/lib/constants";
 import { api } from "~/trpc/react";
-import { ArtistList } from "~/components/artist-list";
+import { ArtistList } from "~/components/ArtistList";
 
 export function ActiveArtists() {
   const { getValue: getDeviceId } = useLocalStorage({

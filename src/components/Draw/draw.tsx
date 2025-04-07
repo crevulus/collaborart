@@ -1,8 +1,8 @@
 import { useEffect, useState, type RefObject } from "react";
 import { Eraser, Paintbrush2, Trash2, Undo2 } from "lucide-react";
 import { COLOURS } from "~/lib/constants";
-import Canvas from "./canvas";
-import { Button } from "./ui/button";
+import Canvas from "../Canvas/canvas";
+import { Button } from "../ui/button";
 
 interface IDrawProps {
   canvasRef: RefObject<HTMLCanvasElement | null>;
