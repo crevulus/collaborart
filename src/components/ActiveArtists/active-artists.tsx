@@ -16,7 +16,7 @@ export function ActiveArtists() {
     { enabled: !!getDeviceId() },
   );
 
-  const { data: artists } = api.grids.getArtists.useQuery(
+  const { data: artists } = api.artists.getArtists.useQuery(
     { grid_id: Number(activeGrid?.id) ?? 0 },
     { enabled: !!activeGrid?.id },
   );

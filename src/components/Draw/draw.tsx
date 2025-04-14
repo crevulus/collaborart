@@ -100,7 +100,7 @@ export default function Draw({ canvasRef }: IDrawProps) {
   };
 
   return (
-    <main className="container mx-auto max-w-3xl flex-1 space-y-4 p-4">
+    <main className="container mx-auto max-w-3xl flex-1 touch-none space-y-4 overscroll-none p-4">
       <Canvas
         canvasRef={canvasRef}
         startDrawing={startDrawing}

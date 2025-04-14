@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`flex min-h-screen flex-col bg-bg bg-[radial-gradient(#80808080_1px,transparent_1px)] font-sans antialiased [background-size:16px_16px]`}
+        className={`bg-bg flex min-h-screen touch-none flex-col overscroll-none bg-[radial-gradient(#80808080_1px,transparent_1px)] [background-size:16px_16px] font-sans antialiased`}
       >
         <TRPCReactProvider>
           <LocalStorageChecker />

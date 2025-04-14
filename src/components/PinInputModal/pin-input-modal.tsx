@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, Unlock } from "lucide-react";
+import { Lock, ArrowRight } from "lucide-react";
 import { z } from "zod";
 
 import { SearchParams } from "~/enums/general";
@@ -60,7 +60,11 @@ export function PinInputModal({ open, onClose, artist }: PinInputModalProps) {
       onSubmit={handleSubmit}
       isSubmitDisabled={!isValid}
       submitButtonIcon={
-        isValid ? <Unlock className="h-4 w-4" /> : <Lock className="h-4 w-4" />
+        isValid ? (
+          <ArrowRight className="h-4 w-4" />
+        ) : (
+          <Lock className="h-4 w-4" />
+        )
       }
       isLoading={isLoading}
       customContent={

@@ -39,10 +39,20 @@ export default function GridPage({ searchParams }: INextPageProps) {
   const effectiveGridId = gridId ?? gridByArtist?.id;
 
   // Use the cached data from tRPC
-  const { data: artists } = api.grids.getArtists.useQuery(
+  const { data: artists } = api.artists.getArtists.useQuery(
     { grid_id: Number(effectiveGridId) ?? 0 },
     { enabled: !!effectiveGridId },
   );
+
+  const { data: squares } = api.squares.getSquaresByGrid.useQuery(
+    { grid_id: Number(effectiveGridId) ?? 0 },
+    { enabled: !!effectiveGridId },
+  );
+
+  const filledSquaresCount =
+    squares?.filter((square) => square.drawing_data || square.image_url)
+      .length ?? 0;
+  const totalSquares = squares?.length ?? 25; // Default to 25 if squares are not loaded yet
 
   const handleAddArtist = () => {
     setShowAddArtistModal(true);
@@ -71,11 +81,9 @@ export default function GridPage({ searchParams }: INextPageProps) {
         <Grid cells={gridData} onCellClick={handleCellClick} />
 
         <div className="space-y-2">
-          <Progress
-            value={(gridData.filter((cell) => cell.filled).length / 25) * 100}
-          />
+          <Progress value={(filledSquaresCount / totalSquares) * 100} />
           <p className="text-muted-foreground text-center text-sm font-medium">
-            {gridData.filter((cell) => cell.filled).length}/25
+            {filledSquaresCount}/{totalSquares}
           </p>
         </div>
       </main>
