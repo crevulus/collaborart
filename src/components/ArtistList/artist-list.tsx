@@ -18,13 +18,23 @@ interface ArtistListProps {
   onAddClick?: () => void;
   avatarSize?: "sm" | "md" | "lg";
   alignment?: "left" | "center" | "right";
+  variant?: "primary" | "compact";
 }
+
+const avatarSizeMap = {
+  compact: "sm" as const,
+  primary: "lg" as const,
+};
+
+const alignmentMap = {
+  compact: "left",
+  primary: "center",
+};
 
 export function ArtistList({
   artists,
   onAddClick,
-  avatarSize = "lg",
-  alignment = "center",
+  variant = "primary",
 }: ArtistListProps) {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const showAddButton = !!onAddClick;
@@ -46,8 +56,8 @@ export function ArtistList({
       <div
         className={cn(
           "flex w-full items-center justify-around gap-4",
-          alignment === "left" && "justify-start",
-          alignment === "right" && "justify-end",
+          alignmentMap[variant] === "left" && "justify-start",
+          alignmentMap[variant] === "right" && "justify-end",
         )}
       >
         {artists.map((artist) => {
@@ -60,7 +70,10 @@ export function ArtistList({
               className="group flex flex-col items-center gap-3"
             >
               <div className="relative">
-                <Avatar avatarSize={avatarSize}>
+                <Avatar
+                  avatarSize={avatarSizeMap[variant]}
+                  className="h-16 w-16"
+                >
                   <AvatarFallback>
                     {artist.username.slice(0, 1).toUpperCase()}
                   </AvatarFallback>
@@ -80,7 +93,7 @@ export function ArtistList({
               onClick={onAddClick}
             >
               <Plus
-                className={`${avatarSize === "lg" ? "h-8 w-8" : "h-6 w-6"}`}
+                className={`${avatarSizeMap[variant] === "lg" ? "h-8 w-8" : "h-6 w-6"}`}
               />
             </Button>
             <span className="text-muted-foreground text-sm font-medium">

@@ -3,7 +3,7 @@
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { ArtistList } from "~/components/ArtistList";
+import { ActiveArtists } from "~/components/ActiveArtists";
 import { Grid } from "~/components/Grid";
 import { ExportModal } from "~/components/ExportModal";
 import { AddArtistModal } from "~/components/AddArtistModal";
@@ -29,20 +29,12 @@ export default function GridPage({ searchParams }: INextPageProps) {
   const [showAddArtistModal, setShowAddArtistModal] = useState(false);
   const [gridData] = useState(initialGridData);
 
-  // If we have an artist ID but no grid ID, fetch the grid by artist
   const { data: gridByArtist } = api.grids.getGridByArtist.useQuery(
     { artist_id: Number(artistId) ?? 0 },
     { enabled: !!artistId && !gridId },
   );
 
-  // Use the grid ID from the URL or from the artist
   const effectiveGridId = gridId ?? gridByArtist?.id;
-
-  // Use the cached data from tRPC
-  const { data: artists } = api.artists.getArtists.useQuery(
-    { grid_id: Number(effectiveGridId) ?? 0 },
-    { enabled: !!effectiveGridId },
-  );
 
   const { data: squares } = api.squares.getSquaresByGrid.useQuery(
     { grid_id: Number(effectiveGridId) ?? 0 },
@@ -71,12 +63,7 @@ export default function GridPage({ searchParams }: INextPageProps) {
       <AppHeader showIcons onSave={handleSave} />
 
       <main className="container mx-auto max-w-3xl flex-1 space-y-6 px-4 py-4">
-        <ArtistList
-          artists={artists ?? []}
-          onAddClick={handleAddArtist}
-          avatarSize="sm"
-          alignment="left"
-        />
+        <ActiveArtists variant="compact" onAddClick={handleAddArtist} />
 
         <Grid cells={gridData} onCellClick={handleCellClick} />
 

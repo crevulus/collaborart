@@ -5,7 +5,15 @@ import { DEVICE_ID_LOCAL_STORAGE_KEY } from "~/lib/constants";
 import { api } from "~/trpc/react";
 import { ArtistList } from "~/components/ArtistList";
 
-export function ActiveArtists() {
+interface ActiveArtistsProps {
+  variant?: "primary" | "compact";
+  onAddClick?: () => void;
+}
+
+export function ActiveArtists({
+  variant = "primary",
+  onAddClick,
+}: ActiveArtistsProps) {
   const { getValue: getDeviceId } = useLocalStorage({
     key: DEVICE_ID_LOCAL_STORAGE_KEY,
     defaultValue: "",
@@ -29,5 +37,11 @@ export function ActiveArtists() {
     (artist) => artist?.id && artist?.username,
   );
 
-  return <ArtistList artists={validArtists} />;
+  return (
+    <ArtistList
+      artists={validArtists}
+      variant={variant}
+      onAddClick={onAddClick}
+    />
+  );
 }
